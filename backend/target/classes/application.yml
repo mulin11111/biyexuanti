@@ -1,0 +1,55 @@
+# Spring Boot 配置文件
+
+# 基本配置
+spring:
+  application:
+    name: topic-system-backend
+  main:
+    allow-circular-references: true  # 允许循环依赖
+  
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/graduation_topic_system?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: "125012"
+  
+  # Redis配置（可选，用于缓存）
+  # redis:
+  #   host: localhost
+  #   port: 6379
+  #   password:
+  #   database: 0
+
+# MyBatis Plus 配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.graduation.topic.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: AUTO
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# JWT配置
+jwt:
+  secret: graduation_topic_system_secret_key_2024_secure_strong_long_key_for_jwt_auth
+  expiration: 86400000  # 24小时
+  tokenHeader: Authorization
+  tokenPrefix: Bearer 
+
+# 日志配置
+logging:
+  level:
+    com.graduation.topic: debug
+    org.springframework.security: debug
