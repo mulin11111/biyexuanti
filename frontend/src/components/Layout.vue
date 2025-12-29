@@ -8,46 +8,56 @@
           <el-icon>{{ isCollapsed ? 'Menu' : 'Close' }}</el-icon>
         </el-button>
       </div>
-      <nav class="sidebar-menu">
+      <el-menu
+        :default-active="$route.path"
+        class="sidebar-menu"
+        :collapse="isCollapsed"
+        background-color="#304156"
+        text-color="#fff"
+        active-text-color="#409EFF"
+        :collapse-transition="false"
+        router
+        style="border-right: none;"
+      >
         <!-- 管理员菜单 -->
         <template v-if="userInfo.role === 'admin'">
-          <el-menu-item index="/dashboard" @click="$router.push('/dashboard')">
+          <el-menu-item index="/dashboard">
             <el-icon><House /></el-icon>
-            <span>{{ isCollapsed ? '' : '首页' }}</span>
+            <template #title>首页</template>
           </el-menu-item>
-          <el-menu-item index="/admin/users" @click="$router.push('/admin/users')">
+          <el-menu-item index="/admin/users">
             <el-icon><User /></el-icon>
-            <span>{{ isCollapsed ? '' : '用户管理' }}</span>
+            <template #title>用户管理</template>
           </el-menu-item>
-          <el-menu-item index="/admin/topics" @click="$router.push('/admin/topics')">
+          <el-menu-item index="/admin/topics">
             <el-icon><Document /></el-icon>
-            <span>{{ isCollapsed ? '' : '选题管理' }}</span>
+            <template #title>选题管理</template>
           </el-menu-item>
-          <el-menu-item index="/admin/progress" @click="$router.push('/admin/progress')">
+          <el-menu-item index="/admin/progress">
             <el-icon><Time /></el-icon>
-            <span>{{ isCollapsed ? '' : '进度管理' }}</span>
+            <template #title>进度管理</template>
           </el-menu-item>
-          <el-menu-item index="/admin/statistics" @click="$router.push('/admin/statistics')">
+          <el-menu-item index="/admin/statistics">
             <el-icon><DataAnalysis /></el-icon>
-            <span>{{ isCollapsed ? '' : '数据统计' }}</span>
+            <template #title>数据统计</template>
           </el-menu-item>
         </template>
         <!-- 用户菜单 -->
         <template v-else>
-          <el-menu-item index="/user/topics" @click="$router.push('/user/topics')">
+          <el-menu-item index="/user/topics">
             <el-icon><Menu /></el-icon>
-            <span>{{ isCollapsed ? '' : '选题列表' }}</span>
+            <template #title>选题列表</template>
           </el-menu-item>
-          <el-menu-item index="/user/selected-topic" @click="$router.push('/user/selected-topic')">
+          <el-menu-item index="/user/selected-topic">
             <el-icon><DocumentChecked /></el-icon>
-            <span>{{ isCollapsed ? '' : '已选课题' }}</span>
+            <template #title>已选课题</template>
           </el-menu-item>
-          <el-menu-item index="/user/progress" @click="$router.push('/user/progress')">
+          <el-menu-item index="/user/progress">
             <el-icon><EditPen /></el-icon>
-            <span>{{ isCollapsed ? '' : '进度登记' }}</span>
+            <template #title>进度登记</template>
           </el-menu-item>
         </template>
-      </nav>
+      </el-menu>
     </aside>
 
     <!-- 主内容区 -->
@@ -174,31 +184,10 @@ onMounted(() => {
   font-size: 18px;
 }
 
+/* 侧边栏菜单样式 */
 .sidebar-menu {
   flex: 1;
-  padding: 16px 0;
-}
-
-.sidebar-menu .el-menu-item {
-  color: #fff;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  height: 48px;
-}
-
-.sidebar-menu .el-menu-item:hover {
-  background-color: #409EFF;
-}
-
-.sidebar-menu .el-menu-item.is-active {
-  background-color: #409EFF;
-  color: #fff;
-}
-
-.sidebar-menu .el-icon {
-  font-size: 18px;
-  margin-right: 8px;
+  border-right: none; /* 移除 Element Plus 默认的右边框 */
 }
 
 /* 主内容区样式 */

@@ -59,7 +59,7 @@
         <el-form-item label="用户名" prop="username">
           <el-input v-model="userForm.username" placeholder="请输入用户名" />
         </el-form-item>
-        <el-form-item label="密码" prop="password" v-if="!dialogType === 'edit'">
+        <el-form-item label="密码" prop="password" v-if="dialogType !== 'edit'">
           <el-input v-model="userForm.password" type="password" placeholder="请输入密码" show-password />
         </el-form-item>
         <el-form-item label="真实姓名" prop="realName">
@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
@@ -112,27 +112,29 @@ const userForm = reactive({
   status: 1
 })
 
-// 表单验证规则
-const userRules = {
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 20, message: '用户名长度在 3 到 20 个字符', trigger: 'blur' }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 20, message: '密码长度在 6 到 20 个字符', trigger: 'blur' }
-  ],
-  realName: [
-    { required: true, message: '请输入真实姓名', trigger: 'blur' }
-  ],
-  email: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
-  ],
-  role: [
-    { required: true, message: '请选择角色', trigger: 'change' }
-  ]
-}
+// 动态表单验证规则
+const userRules = computed(() => {
+  return {
+    username: [
+      { required: true, message: '请输入用户名', trigger: 'blur' },
+      { min: 3, max: 20, message: '用户名长度在 3 到 20 个字符', trigger: 'blur' }
+    ],
+    password: [
+      ...(dialogType.value === 'add' ? [{ required: true, message: '请输入密码', trigger: 'blur' }] : []),
+      { min: 6, max: 20, message: '密码长度在 6 到 20 个字符', trigger: 'blur' }
+    ],
+    realName: [
+      { required: true, message: '请输入真实姓名', trigger: 'blur' }
+    ],
+    email: [
+      { required: true, message: '请输入邮箱', trigger: 'blur' },
+      { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
+    ],
+    role: [
+      { required: true, message: '请选择角色', trigger: 'change' }
+    ]
+  }
+})
 
 // 获取用户列表
 const getUserList = async () => {
@@ -175,6 +177,8 @@ const handleEdit = (row) => {
   dialogType.value = 'edit'
   dialogTitle.value = '编辑用户'
   Object.assign(userForm, row)
+  // 清空密码，防止二次加密
+  userForm.password = ''
   dialogVisible.value = true
 }
 

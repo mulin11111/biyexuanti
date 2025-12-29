@@ -6,6 +6,7 @@ import com.graduation.topic.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -18,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * JWT认证过滤器
@@ -49,9 +51,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 获取用户信息
             User user = userService.getUserByUsername(username);
             if (user != null) {
+                // 构建权限列表，添加ROLE_前缀
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
+                
                 // 设置认证信息
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        user, null, null);
+                        user, null, Collections.singletonList(authority));
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
