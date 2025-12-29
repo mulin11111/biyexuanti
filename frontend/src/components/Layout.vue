@@ -5,7 +5,7 @@
       <div class="sidebar-header">
         <h2 class="sidebar-title">{{ isCollapsed ? '系统' : '毕业设计选题系统' }}</h2>
         <el-button type="text" @click="toggleCollapse" class="collapse-btn">
-          <el-icon>{{ isCollapsed ? 'Menu' : 'Close' }}</el-icon>
+          <el-icon>{{ isCollapsed ? <IconMenu /> : <CloseIcon /> }}</el-icon>
         </el-button>
       </div>
       <el-menu
@@ -45,7 +45,7 @@
         <!-- 用户菜单 -->
         <template v-else>
           <el-menu-item index="/user/topics">
-            <el-icon><Menu /></el-icon>
+            <el-icon><IconMenu /></el-icon>
             <template #title>选题列表</template>
           </el-menu-item>
           <el-menu-item index="/user/selected-topic">
@@ -66,7 +66,7 @@
       <header class="top-header">
         <div class="header-left">
           <el-button type="text" @click="toggleCollapse" class="menu-btn">
-            <el-icon><Menu /></el-icon>
+            <el-icon><IconMenu /></el-icon>
           </el-button>
         </div>
         <div class="header-right">
@@ -97,7 +97,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  House, User, Document, Time, DataAnalysis, Menu, Close,
+  House, User, Document, Time, DataAnalysis, Menu as IconMenu, Close as CloseIcon,
   DocumentChecked, EditPen, ArrowDown
 } from '@element-plus/icons-vue'
 

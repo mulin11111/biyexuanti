@@ -57,6 +57,10 @@ const handleLogin = async () => {
       try {
         // 发送登录请求
         const response = await axios.post('/auth/login', loginForm)
+        
+        // 打印调试信息
+        console.log('登录响应:', response)
+        
         if (response.code === 200) {
           // 保存token和用户信息到本地存储
           const loginData = response.data
@@ -78,9 +82,11 @@ const handleLogin = async () => {
             router.push('/user/topics')
           }
         } else {
+          console.warn('登录状态码不匹配:', response.code)
           ElMessage.error(response.message || '登录失败')
         }
       } catch (error) {
+        console.error('登录异常:', error)
         ElMessage.error(error.response?.message || '登录失败，请重试')
       } finally {
         loading.value = false
