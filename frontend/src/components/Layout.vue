@@ -5,7 +5,10 @@
       <div class="sidebar-header">
         <h2 class="sidebar-title">{{ isCollapsed ? '系统' : '毕业设计选题系统' }}</h2>
         <el-button type="text" @click="toggleCollapse" class="collapse-btn">
-          <el-icon>{{ isCollapsed ? <IconMenu /> : <CloseIcon /> }}</el-icon>
+          <el-icon>
+            <IconMenu v-if="isCollapsed" />
+            <CloseIcon v-else />
+          </el-icon>
         </el-button>
       </div>
       <el-menu

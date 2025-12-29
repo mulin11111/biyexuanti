@@ -41,12 +41,12 @@ server:
   servlet:
     context-path: /api
 
-# JWT配置
+## JWT配置
 jwt:
   secret: graduation_topic_system_secret_key_2024_secure_strong_long_key_for_jwt_auth
   expiration: 86400000  # 24小时
   tokenHeader: Authorization
-  tokenPrefix: Bearer 
+  tokenPrefix: "Bearer "  # 添加双引号以保留末尾空格 
 
 # 日志配置
 logging:
