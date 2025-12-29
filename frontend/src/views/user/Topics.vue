@@ -46,7 +46,7 @@
             type="primary" 
             size="small" 
             @click="handleSelectTopic(scope.row)"
-            :disabled="scope.row.status === 0 || scope.row.currentStudents >= scope.row.maxStudents || isSelected(scope.row.id)"
+            :disabled="scope.row.status === 0 || scope.row.currentStudents >= scope.row.maxStudents || selectedTopic !== null"
           >
             {{ isSelected(scope.row.id) ? '已选择' : '选择' }}
           </el-button>
@@ -103,7 +103,8 @@ const getTopicList = async () => {
     const response = await axios.get('/user/topics', {
       params: {
         page: currentPage.value,
-        size: pageSize.value
+        size: pageSize.value,
+        keyword: searchQuery.value
       }
     })
     if (response.code === 200) {

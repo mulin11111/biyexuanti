@@ -19,22 +19,14 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements
 
     @Override
     public boolean incrementCurrentStudents(Long topicId) {
-        Topic topic = baseMapper.selectById(topicId);
-        if (topic == null) {
-            return false;
-        }
-        topic.setCurrentStudents(topic.getCurrentStudents() + 1);
-        return updateById(topic);
+        // 使用数据库原子更新操作，避免并发问题
+        return baseMapper.checkAndIncrement(topicId) > 0;
     }
 
     @Override
     public boolean decrementCurrentStudents(Long topicId) {
-        Topic topic = baseMapper.selectById(topicId);
-        if (topic == null || topic.getCurrentStudents() <= 0) {
-            return false;
-        }
-        topic.setCurrentStudents(topic.getCurrentStudents() - 1);
-        return updateById(topic);
+        // 使用数据库原子更新操作，避免并发问题
+        return baseMapper.checkAndDecrement(topicId) > 0;
     }
 
 }

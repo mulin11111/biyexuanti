@@ -126,7 +126,8 @@ const getTopicList = async () => {
     const response = await axios.get('/admin/topics', {
       params: {
         page: currentPage.value,
-        size: pageSize.value
+        size: pageSize.value,
+        keyword: searchQuery.value
       }
     })
     if (response.code === 200) {
@@ -180,6 +181,7 @@ const handleStatusChange = async (row) => {
   try {
     const newStatus = row.status === 1 ? 0 : 1
     await axios.put(`/admin/topics/${row.id}`, {
+      id: row.id,
       status: newStatus
     })
     ElMessage.success('状态更新成功')
